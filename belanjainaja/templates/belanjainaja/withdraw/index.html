@@ -1,0 +1,45 @@
+{% extends "belanjainaja/base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h4>Data Pengeluaran</h4>
+    <a href="{% url 'belanja:withdraw.create' %}">+ Tambah Pengeluaran</a>
+  </div>
+{% if not latest_withdraw_list %}
+<p>data not available.</p>
+{% else %}
+<div class="table-responsive">
+    <table class="table table-sm table-striped align-middle">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Tanggal Pengeluaran</th>
+          <th>Jumlah</th>
+          <th>Keterangan</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        {% for withdraw in latest_withdraw_list %}
+        <tr>
+          <td scope="row">{{forloop.counter}}</td>
+          <td>{{withdraw.pulled_on}}</td>
+          <td>{{withdraw.amount}}</td>
+          <td>{{withdraw.description}}</td>
+          <td class="d-flex justify-center align-items-center">
+            <a href="{% url 'belanja:withdraw.update' withdraw.id %}" class="btn btn-sm btn-info me-1">Ubah</a>
+            <form action="{% url 'belanja:withdraw.delete' withdraw.id %}" method="POST" class="mb-0">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+  
+      </tfoot>
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

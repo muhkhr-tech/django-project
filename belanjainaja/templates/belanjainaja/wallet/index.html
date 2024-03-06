@@ -1,0 +1,52 @@
+{% extends "belanjainaja/base.html" %}
+
+{% block content %}
+<div>
+  <div class="row g-2">
+    <div class="col-md-4">
+      <div class="card mb-3 rounded-3">
+        <div class="row g-0">
+          <div class="col-md-12">
+            <div class="card-body">
+              <h5 class="card-title">Pemasukan</h5>
+              <p class="card-text">
+                Rp{{ wallet.income}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card mb-3 rounded-3">
+        <div class="row g-0">
+          <div class="col-md-12">
+            <div class="card-body">
+              <h5 class="card-title">Pengeluaran</h5>
+              <p class="card-text">
+                Rp{{ wallet.expenditure}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card mb-3 rounded-3">
+        <div class="row g-0">
+          <div class="col-md-12">
+            <div class="card-body">
+              <h5 class="card-title">Saldo</h5>
+              <p class="card-text">
+                Rp{{ wallet.balance}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'todolist/base.html' %}
+
+{% block content %}
+<div style="display: flex;">
+    <form action="{% url 'todos:update' todo.id %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>
+                <h1>Form Update Todo</h1>
+            </legend>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <input class="form-input" type="text" name="title" value="{{todo.title}}" required />
+            <button type="submit" class="btn btn-warning">Update todo</button>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

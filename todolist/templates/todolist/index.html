@@ -1,0 +1,57 @@
+{% extends 'todolist/base.html' %}
+
+{% block content %}
+<div>
+    <form action="{% url 'todos:create' %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>
+                <h1>Form Add Todo</h1>
+            </legend>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <input class="form-input" type="text" name="title" required />
+            <button type="submit" class="btn btn-primary">Add todo</button>
+        </fieldset>
+    </form>
+
+    {% if latest_todo_list %}
+    <ul>
+        {% for todo in latest_todo_list %}
+        <li>
+            <a href="/todolist/{{ todo.id }}/">{{ todo.title }}</a> | <a style="color: salmon;"
+                href="{% url 'todos:delete' todo.id %}">Delete</a> | <a style="color: green;"
+                href="{% url 'todos:update' todo.id %}">Update</a>
+        </li>
+        <form action="{% url 'todos:update_status' todo.id %}" method="post">
+            {% csrf_token %}
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+            <div style="display: flex;">
+                <div>
+                    <input type="radio" name="status" id="{{todo.id}}do" value='DO' {% if todo.status == "DO" %}
+                        checked="checked" {% endif %}>
+                    <label for="{{todo.id}}do">Do</label>
+                </div>
+
+                <div>
+                    <input type="radio" name="status" id="{{todo.id}}doing" value='DOING' {% if todo.status == "DOING" %}
+                        checked="checked" {% endif %}>
+                    <label for="{{todo.id}}doing">Doing</label>
+                </div>
+                <div>
+                    <input type="radio" name="status" id="{{todo.id}}done" value='DONE' {% if todo.status == "DONE" %}
+                        checked="checked" {% endif %}>
+                    <label for="{{todo.id}}done">Done</label><br>
+                </div>
+                <button type="submit" style="margin-left: 2px;">Update status</button>
+            </div>
+        </form>
+        {% endfor %}
+        <div><a href="{% url 'todos:recap' %}">Recap</a></div>
+    </ul>
+
+    {% else %}
+    <p>No todos are available.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'todolist/base.html' %}
+
+{% block content %}
+<a href="{% url 'todos:index' %}">Back</a>
+<h1>Recap</h1>
+<ul>
+    {% for todo in todos %}
+    {% if todo.status == 'DO' %}
+    <li>{{todo.title}} [<span style="color: blue;">{{todo.status}}</span>]</li>
+    {% elif todo.status == 'DOING' %}
+    <li>{{todo.title}} [<span style="color: green;">{{todo.status}}</span>]</li>
+    {% elif todo.status == 'DONE' %}
+    <li>{{todo.title}} [<span style="color: gold;">{{todo.status}}</span>]</li>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endblock %}

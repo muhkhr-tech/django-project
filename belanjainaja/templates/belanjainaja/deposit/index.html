@@ -1,0 +1,45 @@
+{% extends "belanjainaja/base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h4>Data Pemasukan</h4>
+    <a href="{% url 'belanja:deposit.create' %}">+ Tambah Pemasukan</a>
+  </div>
+{% if not latest_deposit_list %}
+<p>data not available.</p>
+{% else %}
+<div class="table-responsive">
+    <table class="table table-sm table-striped align-middle">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Tanggal Pemasukan</th>
+          <th>Jumlah</th>
+          <th>Keterangan</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        {% for deposit in latest_deposit_list %}
+        <tr>
+          <td scope="row">{{forloop.counter}}</td>
+          <td>{{deposit.saved_on}}</td>
+          <td>{{deposit.amount}}</td>
+          <td>{{deposit.description}}</td>
+          <td class="d-flex justify-center align-items-center">
+            <a href="{% url 'belanja:deposit.update' deposit.id %}" class="btn btn-sm btn-info me-1">Ubah</a>
+            <form action="{% url 'belanja:deposit.delete' deposit.id %}" method="POST" class="mb-0">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+  
+      </tfoot>
+    </table>
+  </div>
+{% endif %}
+{% endblock %}
