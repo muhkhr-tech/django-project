@@ -8,8 +8,16 @@ class Item(models.Model):
 
 class Shopping(models.Model):
     purchase_date = models.DateField()
-    description = models.CharField(max_length=500, )
-    items = models.ManyToManyField(Item)
+    description = models.CharField(max_length=500)
+    items = models.ManyToManyField(Item, through='ShoppingItem')
+
+class ShoppingItem(models.Model):
+    shopping = models.ForeignKey(Shopping, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    price = models.BigIntegerField()
+    unit = models.CharField(max_length=10)
+    total_price = models.BigIntegerField()
 
 class Wallet(models.Model):
     income = models.BigIntegerField()

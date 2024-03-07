@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
 
-from ...models import Item, Deposit, Withdraw, Wallet
+from ...models import Item, Deposit, Withdraw, Wallet, Shopping, ShoppingItem
 
 def index(request):
     latest_item_list = Item.objects.all()
@@ -64,6 +64,8 @@ def reset(request):
     deposit = Deposit.objects.all()
     withdraw = Withdraw.objects.all()
     wallet = Wallet.objects.first()
+    shopping = Shopping.objects.all()
+    shopping_item = ShoppingItem.objects.all()
 
     wallet.income = 0
     wallet.balance = 0
@@ -78,5 +80,11 @@ def reset(request):
 
     for item in withdraw:
         item.delete()
+
+    for shop in shopping:
+        shop.delete()
+
+    for shop_item in shopping_item:
+        shop_item.delete()
 
     return HttpResponseRedirect(reverse("belanja:item.index"))

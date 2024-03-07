@@ -1,0 +1,25 @@
+{% extends 'belanjainaja/base.html' %}
+
+{% block content %}
+<div>
+  <div class="container">
+    <div class="row w-full ms-auto">
+      <div class="col-6 offset-sm-3">
+        <a href="{% url 'belanja:shop.index' %}">Kembali</a>
+        <div class="card text-secondary">
+          <div class="card-body">
+            <h4 class="card-title">{{shop.description}}</h4>
+            <p class="card-text">{{shop.purchase_date}}</p>
+            <ul>
+              {% for shop in shopping_item %}
+              <li>{{shop.item.name}} | @Rp{{shop.price}} | {{ shop.quantity }} | {{ shop.unit }} | Rp{{ shop.total_price }} </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

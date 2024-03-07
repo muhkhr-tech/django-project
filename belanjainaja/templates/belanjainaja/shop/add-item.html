@@ -1,0 +1,81 @@
+{% extends 'belanjainaja/base.html' %}
+
+{% block content %}
+<div>
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-6">
+        <div class="card text-secondary">
+          <div class="card-body">
+            <h4 class="card-title">{{shop.description}}</h4>
+            <p class="card-text">{{shop.purchase_date}}</p>
+            <ul>
+              {% for shop in shopping_item %}
+              <li>{{shop.item.name}} | @Rp{{shop.price}} | {{ shop.quantity }} | {{ shop.unit }} | Rp{{ shop.total_price }} </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-6">
+        <form action="{% url 'belanja:shop.add_item' shop.id %}" method="post">
+          {% csrf_token %}
+          <div class="mb-3 row">
+            <label for="item_id" class="col-2 col-form-label">Barang</label>
+            <div class="col-10">
+              <select class="form-select form-select-sm" id="item_id" name="item_id">
+                <option value="" disabled selected="selected">-Pilih Barang-</option>
+                {% for item in latest_item_list %}
+                <option value="{{item.id}}`{{item.price}}">{{item.name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="price" class="col-2 col-form-label">Harga</label>
+            <div class="col-10">
+              <input type="text" disabled class="form-control" name="price" id="price" placeholder="15000" required />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="quantity" class="col-2 col-form-label">Jumlah</label>
+            <div class="col-10">
+              <input type="text" class="form-control" name="quantity" id="quantity" placeholder="5" required />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="unit" class="col-2 col-form-label">Satuan</label>
+            <div class="col-10">
+              <input type="text" class="form-control" name="unit" id="unit" placeholder="PCS" required />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <div class="offset-sm-2 col-sm-10">
+              <button type="submit" class="btn btn-sm btn-primary">
+                Simpan
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ super }}
+<script>
+  const itemId = document.getElementById('item_id')
+  const price = document.getElementById('price')
+
+  itemId.addEventListener('change', (e) => {
+    const itemElementValue = e.target.value
+    const splitItemIdAndPrice = itemElementValue.split('`')
+    const priceItem = splitItemIdAndPrice[1]
+    price.removeAttribute('disabled')
+    price.value = priceItem
+  })
+</script>
+{% endblock %}

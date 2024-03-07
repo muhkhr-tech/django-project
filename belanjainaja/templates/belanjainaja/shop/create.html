@@ -1,0 +1,75 @@
+{% extends 'belanjainaja/base.html' %}
+
+{% block content %}
+<div>
+  <div class="container">
+    <form action="{% url 'belanja:shop.create' %}" method="post">
+      {% csrf_token %}
+      <div class="mb-3 row">
+        <label for="purchase_date" class="col-2 col-form-label">Tanggal Pembelian</label>
+        <div class="col-10">
+          <input type="date" class="form-control" name="purchase_date" id="purchase_date" required />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="item_id" class="col-2 col-form-label">Barang</label>
+        <div class="col-10">
+          <select class="form-select form-select-sm" id="item_id" name="item_id">
+            <option value="" disabled selected="selected">-Pilih Barang-</option>
+            {% for item in latest_item_list %}
+            <option value="{{item.id}}`{{item.price}}">{{item.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="price" class="col-2 col-form-label">Harga</label>
+        <div class="col-10">
+          <input type="text" disabled class="form-control" name="price" id="price" placeholder="15000" required />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="quantity" class="col-2 col-form-label">Jumlah</label>
+        <div class="col-10">
+          <input type="text" class="form-control" name="quantity" id="quantity" placeholder="5" required />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="unit" class="col-2 col-form-label">Satuan</label>
+        <div class="col-10">
+          <input type="text" class="form-control" name="unit" id="unit" placeholder="PCS" required />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="description" class="col-2 col-form-label">Keterangan</label>
+        <div class="col-10">
+          <textarea class="form-control" name="description" id="description" placeholder="Ini adalah daftar pembelian bulan februari"></textarea>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <div class="offset-sm-2 col-sm-10">
+          <button type="submit" class="btn btn-sm btn-primary">
+            Simpan
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ super }}
+  <script>
+    const itemId = document.getElementById('item_id')
+    const price = document.getElementById('price')
+
+    itemId.addEventListener('change', (e) => {
+      const itemElementValue = e.target.value
+      const splitItemIdAndPrice = itemElementValue.split('`')
+      const priceItem = splitItemIdAndPrice[1]
+      price.removeAttribute('disabled')
+      price.value = priceItem
+    })
+  </script>
+{% endblock %}

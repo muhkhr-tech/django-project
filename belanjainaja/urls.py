@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from .views import item, deposit, wallet, withdraw
+from .views import item, deposit, wallet, withdraw, shop
 
 app_name='belanja'
 
@@ -25,4 +25,11 @@ urlpatterns = [
     path("withdraw/create/", withdraw.create, name="withdraw.create"),
     path("withdraw/<int:withdraw_id>/update/", withdraw.update, name="withdraw.update"),
     path("withdraw/<int:withdraw_id>/delete/", withdraw.delete, name="withdraw.delete"),
+
+    path("shop/", shop.index, name="shop.index"),
+    path("shop/create/", shop.create, name="shop.create"),
+    path("shop/<int:shop_id>/update/", shop.update, name="shop.update"),
+    path("shop/<int:shop_id>/add-item/", shop.add_item, name="shop.add_item"),
+    path("shop/<int:shop_id>/detail/", shop.detail, name="shop.detail"),
+    path("shop/<int:shop_id>/delete/", shop.delete, name="shop.delete"),
 ]

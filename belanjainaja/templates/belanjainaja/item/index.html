@@ -2,14 +2,18 @@
 
 {% block content %}
 <div class="d-flex justify-content-between mb-3">
-  <h4>Data Barang</h4>
-  <a href="{% url 'belanja:item.create' %}">+ add item</a>
+  <div>
+    <h6 class="mb-0">Data Barang</h6>
+    <p class="text-secondary mt-0 fst-italic fw-light" style="font-size: 13px;">Data barang yang akan muncul saat
+      membuat catatan belanja.</p>
+  </div>
+  <a href="{% url 'belanja:item.create' %}">+ Tambah Barang</a>
 </div>
 {% if not latest_item_list %}
 <p>data not available.</p>
 {% else %}
 <div class="table-responsive">
-  <table class="table table-sm table-striped align-middle">
+  <table class="table table-sm align-middle">
     <thead>
       <tr>
         <th>No.</th>

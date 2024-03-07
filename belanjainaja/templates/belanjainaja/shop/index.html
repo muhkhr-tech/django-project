@@ -1,0 +1,44 @@
+{% extends "belanjainaja/base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+  <div>
+    <h6 class="mb-0">Data Belanja</h6>
+    <p class="text-secondary mt-0 fst-italic fw-light" style="font-size: 13px;">Catatan data belanjaan.</p>
+  </div>
+  <a href="{% url 'belanja:shop.create' %}">+ Tambah Belanja</a>
+</div>
+{% if not latest_shop_list %}
+<p>data not available.</p>
+{% else %}
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Tanggal Pembelian</th>
+        <th>Keterangan</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      {% for shop in latest_shop_list %}
+      <tr>
+        <td scope="row">{{forloop.counter}}</td>
+        <td>{{shop.purchase_date}}</td>
+        <td>{{shop.description}}</td>
+        <td class="d-flex justify-center align-items-center">
+          <a href="{% url 'belanja:shop.add_item' shop.id %}" class="btn btn-sm btn-primary me-1">Add Item</a>
+          <a href="{% url 'belanja:shop.detail' shop.id %}" class="btn btn-sm btn-warning me-1">Detail</a>
+          <a href="{% url 'belanja:shop.update' shop.id %}" class="btn btn-sm btn-info me-1">Ubah</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+
+    </tfoot>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

@@ -2,14 +2,17 @@
 
 {% block content %}
 <div class="d-flex justify-content-between mb-3">
-    <h4>Data Pengeluaran</h4>
+  <div>
+    <h6 class="mb-0">Data Pengeluaran</h6>
+    <p class="text-secondary mt-0 fst-italic fw-light" style="font-size: 13px;">Catatan data keuangan keluar.</p>
+  </div>
     <a href="{% url 'belanja:withdraw.create' %}">+ Tambah Pengeluaran</a>
   </div>
 {% if not latest_withdraw_list %}
 <p>data not available.</p>
 {% else %}
 <div class="table-responsive">
-    <table class="table table-sm table-striped align-middle">
+    <table class="table table-sm align-middle">
       <thead>
         <tr>
           <th>No.</th>
