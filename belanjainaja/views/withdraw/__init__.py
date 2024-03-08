@@ -4,9 +4,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required
 
 from ...models import Withdraw, Wallet
 
+@login_required
 def index(request):
     latest_withdraw_list = Withdraw.objects.all()
     context = {
@@ -14,6 +16,7 @@ def index(request):
     }
     return render(request, "belanjainaja/withdraw/index.html", context=context)
 
+@login_required
 def create(request):
     if request.method == 'POST':
 
@@ -37,6 +40,7 @@ def create(request):
     
     return render(request, "belanjainaja/withdraw/create.html")
 
+@login_required
 def update(request, withdraw_id):
     withdraw = get_object_or_404(Withdraw, pk=withdraw_id)
     
@@ -54,6 +58,7 @@ def update(request, withdraw_id):
     
     return render(request, "belanjainaja/withdraw/update.html", context={"withdraw": withdraw})
 
+@login_required
 def delete(request, withdraw_id):
     if request.method == 'POST':
 

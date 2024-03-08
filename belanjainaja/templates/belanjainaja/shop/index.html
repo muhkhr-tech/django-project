@@ -1,6 +1,9 @@
 {% extends "belanjainaja/base.html" %}
 
 {% block content %}
+{% if not latest_shop_list %}
+<p>data not available.</p>
+{% else %}
 <div class="mb-3">
   <div class="d-flex justify-content-between mb-3">
     <div>
@@ -19,9 +22,6 @@
     </form>
   </div>
 </div>
-{% if not latest_shop_list %}
-<p>data not available.</p>
-{% else %}
 <div class="table-responsive">
   <table class="table table-sm align-middle">
     <thead class="bg-secondary text-white">
@@ -44,7 +44,8 @@
         <td>
           <form action="{% url 'belanja:shop.verify' shop.id %}" method="post" id="formShopVerify{{shop.id}}">
             {% csrf_token %}
-            <input type="checkbox" data-form-id="formShopVerify{{shop.id}}" onchange="verifyShop(this)" {% if shop.is_verify %} disabled checked {% endif %} />
+            <input type="checkbox" data-form-id="formShopVerify{{shop.id}}" onchange="verifyShop(this)"
+            {% if shop.is_verify %} disabled checked {% endif %} />
           </form>
         </td>
         <td class="d-flex justify-center align-items-center">

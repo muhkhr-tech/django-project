@@ -3,12 +3,15 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from ..models import *
 
+@login_required
 def index(request):
     return render(request, "belanjainaja/index.html")
 
+@login_required
 def init_wallet(request):
     wallet = Wallet.objects.first()
 
@@ -21,7 +24,7 @@ def init_wallet(request):
 
     return HttpResponseRedirect(reverse("belanja:index"))
 
-
+@login_required
 def reset(request):
     items = Item.objects.all()
     deposit = Deposit.objects.all()

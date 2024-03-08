@@ -4,9 +4,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required
 
 from ...models import Deposit, Wallet
 
+@login_required
 def index(request):
     latest_deposit_list = Deposit.objects.all()
     context = {
@@ -14,6 +16,7 @@ def index(request):
     }
     return render(request, "belanjainaja/deposit/index.html", context=context)
 
+@login_required
 def create(request):
     if request.method == 'POST':
 
@@ -37,6 +40,7 @@ def create(request):
     
     return render(request, "belanjainaja/deposit/create.html")
 
+@login_required
 def update(request, deposit_id):
     deposit = get_object_or_404(Deposit, pk=deposit_id)
     
@@ -54,6 +58,7 @@ def update(request, deposit_id):
     
     return render(request, "belanjainaja/deposit/update.html", context={"deposit": deposit})
 
+@login_required
 def delete(request, deposit_id):
     if request.method == 'POST':
 

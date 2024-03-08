@@ -4,9 +4,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required
 
 from ...models import Item
 
+@login_required
 def index(request):
     latest_item_list = Item.objects.all()
     context = {
@@ -14,6 +16,7 @@ def index(request):
     }
     return render(request, "belanjainaja/item/index.html", context=context)
 
+@login_required
 def create(request):
     if request.method == 'POST':
 
@@ -29,6 +32,7 @@ def create(request):
     
     return render(request, "belanjainaja/item/create.html")
 
+@login_required
 def update(request, item_id):
     item = get_object_or_404(Item, pk=item_id)
     
@@ -45,6 +49,7 @@ def update(request, item_id):
     
     return render(request, "belanjainaja/item/update.html", context={"item": item})
 
+@login_required
 def delete(request, item_id):
     if request.method == 'POST':
 

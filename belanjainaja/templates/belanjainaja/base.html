@@ -54,6 +54,9 @@
             <a {% if request.path == "/belanjainaja/wallet/" %} class="nav-link text-primary" {% endif %} class="nav-link"
               href="{% url 'belanja:wallet.index' %}">Cek Saldo</a>
           </li>
+          <li class="nav-item">
+            {% include 'belanjainaja/profile-actions.html' %}
+          </li>
         </ul>
       </div>
     </div>

@@ -25,5 +25,9 @@ urlpatterns = [
     path('belanjainaja/', include('belanjainaja.urls')),
     path('todolist/', include('todolist.urls')),
     path('admin/', admin.site.urls),
-    path('', views.index, name='projects')
+    path('', views.index, name='projects'),
+
+    path('accounts/login/', views.signin, name='signin'),
+    path('accounts/logout/', views.signout, name='signout'),
+    path('accounts/register/', views.register, name='register'),
 ]

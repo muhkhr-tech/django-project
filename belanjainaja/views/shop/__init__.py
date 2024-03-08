@@ -4,9 +4,11 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.urls import reverse
 from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required
 
 from ...models import Item, Shopping, Wallet, ShoppingItem
 
+@login_required
 def index(request):
     latest_shop_list = Shopping.objects.filter(is_verify=False)
 
@@ -24,6 +26,7 @@ def index(request):
 
     return render(request, "belanjainaja/shop/index.html", context=context)
 
+@login_required
 def create(request):
     latest_item_list = Item.objects.all()
     
@@ -63,6 +66,7 @@ def create(request):
     
     return render(request, "belanjainaja/shop/create.html", context=context)
 
+@login_required
 def add_item(request, shop_id):
     latest_item_list = Item.objects.all()
     
@@ -128,6 +132,7 @@ def add_item(request, shop_id):
     
     return render(request, "belanjainaja/shop/add-item.html", context=context)
 
+@login_required
 def verify(request, shop_id):
     shop = get_object_or_404(Shopping, pk=shop_id)
 
@@ -161,6 +166,7 @@ def verify(request, shop_id):
     
     return HttpResponseNotFound()
 
+@login_required
 def detail(request, shop_id):
     latest_item_list = Item.objects.all()
     
@@ -176,6 +182,7 @@ def detail(request, shop_id):
     
     return render(request, "belanjainaja/shop/detail.html", context=context)
 
+@login_required
 def update(request, shop_id):
     shop = get_object_or_404(Shopping, pk=shop_id)
     
@@ -193,6 +200,7 @@ def update(request, shop_id):
     
     return render(request, "belanjainaja/shop/update.html", context={"shop": shop})
 
+@login_required
 def delete_item(request, shop_id):
     if request.method == 'POST':
 
@@ -221,6 +229,7 @@ def delete_item(request, shop_id):
     
     return HttpResponseNotFound()
 
+@login_required
 def init_wallet(request):
     wallet = Wallet.objects.first()
 
