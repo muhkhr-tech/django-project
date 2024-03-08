@@ -33,6 +33,10 @@ ALLOWED_HOSTS = [
     'django-project-production-1fd5.up.railway.app'
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "https://django-project-production-1fd5.up.railway.app",
+    # Add any other allowed origins as needed
+]
 
 # Application definition
 
