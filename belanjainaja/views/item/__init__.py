@@ -27,7 +27,8 @@ def create(request):
             new_item.price = request.POST['price']
             new_item.save()
             messages.add_message(request, messages.SUCCESS, "Data berhasil ditambah.")
-        except IntegrityError:
+        except:
+            messages.add_message(request, messages.ERROR, "Data gagal ditambah.")
             return render(request, "belanjainaja/item/create.html")
         
         return HttpResponseRedirect(reverse("belanja:item.index"))
@@ -44,6 +45,7 @@ def update(request, item_id):
             item.name = request.POST['name']
             item.price = request.POST['price']
             item.save()
+            messages.add_message(request, messages.SUCCESS, "Data berhasil diubah.")
         except IntegrityError:
             return HttpResponseRedirect(reverse("belanja:item.index"))
         
