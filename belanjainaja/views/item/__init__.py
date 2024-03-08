@@ -58,33 +58,3 @@ def delete(request, item_id):
         return HttpResponseRedirect(reverse("belanja:item.index"))
     
     return render(request, "belanjainaja/item/create.html")
-
-def reset(request):
-    items = Item.objects.all()
-    deposit = Deposit.objects.all()
-    withdraw = Withdraw.objects.all()
-    wallet = Wallet.objects.first()
-    shopping = Shopping.objects.all()
-    shopping_item = ShoppingItem.objects.all()
-
-    wallet.income = 0
-    wallet.balance = 0
-    wallet.expenditure = 0
-    wallet.save()
-
-    for item in items:
-        item.delete()
-
-    for item in deposit:
-        item.delete()
-
-    for item in withdraw:
-        item.delete()
-
-    for shop in shopping:
-        shop.delete()
-
-    for shop_item in shopping_item:
-        shop_item.delete()
-
-    return HttpResponseRedirect(reverse("belanja:item.index"))

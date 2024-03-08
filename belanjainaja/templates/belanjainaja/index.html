@@ -1,0 +1,8 @@
+{% extends 'belanjainaja/base.html' %}
+
+{% block content %}
+  <p><a href="{% url 'projects' %}">< Projects</a></p>
+  <h6 class="text-dark">Selamat datang di aplikasi BelanjainAja</h6>
+  <p style="font-size: 14px;" class="text-secondary fst-italic">Menjadi lebih hemat dengan mengatur belanja bulanan anda.</p>
+  <p>Silakan <a href="{% url 'belanja:reset' %}">Reset</a> data sebelum mencoba aplikasi !</p>
+{% endblock %}

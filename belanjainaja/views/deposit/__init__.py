@@ -67,15 +67,3 @@ def delete(request, deposit_id):
         return HttpResponseRedirect(reverse("belanja:deposit.index"))
     
     return render(request, "belanjainaja/deposit/create.html")
-
-def init_wallet(request):
-    wallet = Wallet.objects.first()
-
-    if not wallet:
-        wallet = Wallet()
-        wallet.income = 0
-        wallet.balance = 0
-        wallet.expenditure = 0
-        wallet.save()
-
-    return HttpResponseRedirect(reverse("belanja:deposit.index"))

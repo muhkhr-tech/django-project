@@ -9,6 +9,8 @@ class Item(models.Model):
 class Shopping(models.Model):
     purchase_date = models.DateField()
     description = models.CharField(max_length=500)
+    total_price = models.BigIntegerField(default=0)
+    is_verify = models.BooleanField(default=False)
     items = models.ManyToManyField(Item, through='ShoppingItem')
 
 class ShoppingItem(models.Model):

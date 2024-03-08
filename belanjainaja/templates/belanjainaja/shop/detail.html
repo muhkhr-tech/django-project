@@ -3,10 +3,10 @@
 {% block content %}
 <div>
   <div class="container">
-    <div class="row w-full ms-auto">
-      <div class="col-6 offset-sm-3">
+    <div class="row">
+      <div class="col-12">
         <a href="{% url 'belanja:shop.index' %}">Kembali</a>
-        <div class="card text-secondary">
+        <div class="card text-secondary shadow-sm">
           <div class="card-body">
             <h4 class="card-title">{{shop.description}}</h4>
             <p class="card-text">{{shop.purchase_date}}</p>

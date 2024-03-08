@@ -1,44 +1,95 @@
 {% extends "belanjainaja/base.html" %}
 
 {% block content %}
-<div class="d-flex justify-content-between mb-3">
-  <div>
-    <h6 class="mb-0">Data Belanja</h6>
-    <p class="text-secondary mt-0 fst-italic fw-light" style="font-size: 13px;">Catatan data belanjaan.</p>
+<div class="mb-3">
+  <div class="d-flex justify-content-between mb-3">
+    <div>
+      <h6 class="mb-0">Data Belanja</h6>
+      <p class="text-secondary mt-0 fst-italic fw-light" style="font-size: 13px;">Catatan data belanjaan.</p>
+    </div>
+    <a href="{% url 'belanja:shop.create' %}">+ Tambah Belanja</a>
   </div>
-  <a href="{% url 'belanja:shop.create' %}">+ Tambah Belanja</a>
+  <div class="d-flex">
+    <form>
+      <select class="form-select form-select-sm" id="filterVerify">
+        <option value="all">Semua</option>
+        <option value="True">Verifikasi</option>
+        <option value="False">Belum Verifikasi</option>
+      </select>
+    </form>
+  </div>
 </div>
 {% if not latest_shop_list %}
 <p>data not available.</p>
 {% else %}
 <div class="table-responsive">
   <table class="table table-sm align-middle">
-    <thead>
+    <thead class="bg-secondary text-white">
       <tr>
         <th>No.</th>
         <th>Tanggal Pembelian</th>
         <th>Keterangan</th>
+        <th>Total Belanja</th>
+        <th>Verifikasi</th>
         <th>Aksi</th>
       </tr>
     </thead>
     <tbody class="table-group-divider">
       {% for shop in latest_shop_list %}
-      <tr>
+      <tr {% if shop.is_verify %} class="bg-light text-secondary" {% endif %}>
         <td scope="row">{{forloop.counter}}</td>
         <td>{{shop.purchase_date}}</td>
         <td>{{shop.description}}</td>
+        <td>{{shop.total_price}}</td>
+        <td>
+          <form action="{% url 'belanja:shop.verify' shop.id %}" method="post" id="formShopVerify{{shop.id}}">
+            {% csrf_token %}
+            <input type="checkbox" data-form-id="formShopVerify{{shop.id}}" onchange="verifyShop(this)" {% if shop.is_verify %} disabled checked {% endif %} />
+          </form>
+        </td>
         <td class="d-flex justify-center align-items-center">
+          {% if not shop.is_verify %}
           <a href="{% url 'belanja:shop.add_item' shop.id %}" class="btn btn-sm btn-primary me-1">Add Item</a>
           <a href="{% url 'belanja:shop.detail' shop.id %}" class="btn btn-sm btn-warning me-1">Detail</a>
           <a href="{% url 'belanja:shop.update' shop.id %}" class="btn btn-sm btn-info me-1">Ubah</a>
+          {% else %}
+          <div class="fst-italic" style="font-size: 12px;">Note: Jika anda terlanjur memasukkan data
+            barang<br />
+            yang seharusnya tidak ada,<br />
+            anda bisa mengembalikan saldo pada menu "Pemasukan"</div>
+          {% endif %}
         </td>
       </tr>
       {% endfor %}
     </tbody>
-    <tfoot>
-
-    </tfoot>
   </table>
 </div>
 {% endif %}
+{% endblock %}
+
+{% block script %}
+<script>
+  const params = new URLSearchParams(location.search)
+  const filterVerify = document.getElementById('filterVerify')
+
+  filterVerify.addEventListener('change', (e) => {
+    if (e.target.value !== '') {
+      params.set('is_verify', e.target.value)
+    } else {
+      params.delete('is_verify')
+    }
+
+    location.search = params
+  })
+
+  if (params.has('is_verify')) {
+    filterVerify.value = params.get('is_verify')
+  } else {
+    filterVerify.value = 'False'
+  }
+
+  const verifyShop = (e) => {
+    document.getElementById(e.getAttribute('data-form-id')).submit()
+  }
+</script>
 {% endblock %}

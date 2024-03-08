@@ -27,8 +27,9 @@ SECRET_KEY = 'django-insecure-%xlzn1o678@c47gy9@n!5d9xu1ln6!(5(e!po0j3)&hh_fmfmn
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost:8000',
-    '127.0.0.1:8000',
+    'localhost',
+    '127.0.0.1',
+    '192.168.43.34',
     'django-project-production-1fd5.up.railway.app'
 ]
 
@@ -62,7 +63,7 @@ ROOT_URLCONF = 'projects.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "projects/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

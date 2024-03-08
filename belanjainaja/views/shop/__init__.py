@@ -8,10 +8,20 @@ from django.db import IntegrityError
 from ...models import Item, Shopping, Wallet, ShoppingItem
 
 def index(request):
-    latest_shop_list = Shopping.objects.all()
+    latest_shop_list = Shopping.objects.filter(is_verify=False)
+
+    if (request.GET.get('is_verify')):
+        if (request.GET.get('is_verify') == 'True' or request.GET.get('is_verify') == 'False'):
+            latest_shop_list = Shopping.objects.filter(is_verify=request.GET.get('is_verify'))
+        elif (request.GET.get('is_verify') == 'all'):
+            latest_shop_list = Shopping.objects.all()
+        else:
+            latest_shop_list = []
+
     context = {
         "latest_shop_list": latest_shop_list
     }
+
     return render(request, "belanjainaja/shop/index.html", context=context)
 
 def create(request):
@@ -23,19 +33,18 @@ def create(request):
 
     if request.method == 'POST':
 
-        wallet = Wallet.objects.first()
-
         split_item_id_and_price = request.POST['item_id'].split('`')
         item_id = split_item_id_and_price[0]
 
         item = get_object_or_404(Item, pk=item_id)
+
+        total_price = int(request.POST['price']) * int(request.POST['quantity'])
         
         try:
             new_shop = Shopping()
             new_shop.purchase_date = request.POST['purchase_date']
             new_shop.description = request.POST['description']
-
-            total_price = int(request.POST['price']) * int(request.POST['quantity'])
+            new_shop.total_price = total_price
 
             new_shop_item = ShoppingItem()
             new_shop_item.shopping = new_shop
@@ -45,14 +54,9 @@ def create(request):
             new_shop_item.unit = request.POST['unit']
             new_shop_item.total_price = total_price
 
-            wallet.expenditure += total_price
-            wallet.balance -= total_price
-
-            wallet.save()
             new_shop.save()
             new_shop_item.save()
         except IntegrityError:
-            print('erererorororo')
             return HttpResponseRedirect(reverse("belanja:shop.create"))
         
         return HttpResponseRedirect(reverse("belanja:shop.add_item", kwargs={'shop_id': new_shop.id}))
@@ -64,6 +68,9 @@ def add_item(request, shop_id):
     
     shop = get_object_or_404(Shopping, pk=shop_id)
 
+    if shop.is_verify:
+        return HttpResponseRedirect(reverse("belanja:shop.index"))
+
     shopping_item = ShoppingItem.objects.filter(shopping=shop)
 
     context = {
@@ -73,8 +80,6 @@ def add_item(request, shop_id):
     }
 
     if request.method == 'POST':
-
-        wallet = Wallet.objects.first()
 
         split_item_id_and_price = request.POST['item_id'].split('`')
         item_id = split_item_id_and_price[0]
@@ -107,10 +112,13 @@ def add_item(request, shop_id):
 
                 new_shop_item.save()
 
-            wallet.expenditure += total_price
-            wallet.balance -= total_price
+            total_price_shop = 0
 
-            wallet.save()
+            for shop_item in shopping_item:
+                total_price_shop += shop_item.total_price
+
+            shop.total_price = total_price_shop
+
             shop.save()
 
         except IntegrityError:
@@ -119,6 +127,39 @@ def add_item(request, shop_id):
         return HttpResponseRedirect(reverse("belanja:shop.add_item", kwargs={'shop_id': shop_id}))
     
     return render(request, "belanjainaja/shop/add-item.html", context=context)
+
+def verify(request, shop_id):
+    shop = get_object_or_404(Shopping, pk=shop_id)
+
+    if request.method == 'POST':
+
+        wallet = Wallet.objects.first()
+
+        shopping_item = ShoppingItem.objects.filter(shopping=shop)
+
+        total_price_shop = 0
+
+        for shop_item in shopping_item:
+            total_price_shop += shop_item.total_price
+
+        if shop.is_verify:
+            wallet.expenditure -= total_price_shop
+            wallet.balance += total_price_shop
+
+            shop.is_verify = False
+
+        else:
+            wallet.expenditure += total_price_shop
+            wallet.balance -= total_price_shop
+
+            shop.is_verify = True
+
+        shop.save()
+        wallet.save()
+        
+        return HttpResponseRedirect(reverse("belanja:shop.index"))
+    
+    return HttpResponseNotFound()
 
 def detail(request, shop_id):
     latest_item_list = Item.objects.all()
@@ -152,28 +193,31 @@ def update(request, shop_id):
     
     return render(request, "belanjainaja/shop/update.html", context={"shop": shop})
 
-def delete(request, shop_id):
-    shop = get_object_or_404(Shopping, pk=shop_id)
-
-    shopping_item = get_list_or_404(ShoppingItem, shopping=shop)
-
+def delete_item(request, shop_id):
     if request.method == 'POST':
 
-        wallet = Wallet.objects.first()
+        shop = get_object_or_404(Shopping, pk=shop_id)
+        item = get_object_or_404(Item, pk=request.POST['shop_item_id'])
+
+        shopping_item = get_object_or_404(ShoppingItem, shopping=shop, item=item)
         
         try:
-            for shopping in shopping_item:
-                wallet.expenditure -= shopping.total_price
-                wallet.balance += shopping.total_price
+            shopping_item.delete()
 
-            wallet.save()
-            shop.delete()
-            shopping.delete()
+            shopping_item_left = ShoppingItem.objects.filter(shopping=shop)
 
-        except IntegrityError:
-            return HttpResponseRedirect(reverse("belanja:shop.index"))
+            total_price_shop = 0
+
+            for shop_item in shopping_item_left:
+                total_price_shop = shop_item.total_price
+
+            shop.total_price = total_price_shop
+            shop.save()
+
+        except:
+            return HttpResponseRedirect(reverse("belanja:shop.add_item", kwargs={"shop_id": shop_id}))
         
-        return HttpResponseRedirect(reverse("belanja:shop.index"))
+        return HttpResponseRedirect(reverse("belanja:shop.add_item", kwargs={"shop_id": shop_id}))
     
     return HttpResponseNotFound()
 
