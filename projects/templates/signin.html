@@ -43,15 +43,16 @@
 </head>
 
 <body>
-  <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      background-color: white; width: 30%; padding: 30px; border-radius: 10px;" class="border shadow-sm">
-    <h1 class="fs-3 text-center mb-4">Masuk</h1>
-    <p class="text-center mb-5 text-secondary" style="font-size: 14px;">Masuk dengan menggunakan Username dan Password
-      anda.</p>
+  <div class="row">
+    <div class="col-11 col-sm-4 position-absolute top-50 start-50 translate-middle p-4 border rounded-3 shadow-sm">
+      <h1 class="fs-3 text-center mb-4">Masuk</h1>
+      <p class="text-center mb-5 text-secondary" style="font-size: 14px;">Masuk dengan menggunakan Username dan Password
+        anda.</p>
 
-    {% if messages %}
-    {% for message in messages %}
-    <div{% if message.tags %} class="alert {{ message.tags }}" {% endif %}>{{ message }}
+      {% if messages %}
+      {% for message in messages %}
+      <div{% if message.tags %} class="alert {{ message.tags }}" {% endif %}>{{ message }}
+    </div>
   </div>
   {% endfor %}
   {% endif %}
@@ -73,7 +74,9 @@
 
   <p class="mt-2">Belum punya akun ? <a href="{% url 'register' %}" class="">Daftar</a></p>
 
-  <p><a href="{% url 'projects' %}">< Projects</a></p>
+  <p><a href="{% url 'projects' %}">
+      < Projects</a>
+  </p>
 
   </div>
 </body>
