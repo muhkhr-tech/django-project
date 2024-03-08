@@ -2,11 +2,11 @@
   {{request.user.username}}
 </a>
 <ul class="dropdown-menu dropdown-menu-light shadow-sm" aria-labelledby="profileDropdown">
-  <li><a class="dropdown-item" href="{% url 'belanja:wallet.index' %}">Cek Saldo</a></li>
+  <li><a class="dropdown-item" href="{% url 'belanja:wallet.index' %}"><i class="bi bi-currency-dollar"></i> Cek Saldo</a></li>
   <li>
     <form action="{% url 'signout' %}" method="post">
       {% csrf_token %}
-      <button class="dropdown-item btn btn-sm btn-danger w-100 text-danger" type="submit">Sign out</button>
+      <button class="dropdown-item btn btn-sm btn-danger w-100 text-danger" type="submit"><i class="bi bi-power"></i> Sign out</button>
     </form>
   </li>
 </ul>
