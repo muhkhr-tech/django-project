@@ -1,9 +1,6 @@
 {% extends "belanjainaja/base.html" %}
 
 {% block content %}
-{% if not latest_shop_list %}
-<p>data not available.</p>
-{% else %}
 <div class="mb-3">
   <div class="d-flex justify-content-between mb-3">
     <div>
@@ -22,6 +19,9 @@
     </form>
   </div>
 </div>
+{% if not latest_shop_list %}
+<p>data not available.</p>
+{% else %}
 <div class="table-responsive">
   <table class="table table-sm align-middle">
     <thead class="bg-secondary text-white">
@@ -68,7 +68,7 @@
 {% endif %}
 {% endblock %}
 
-{% block script %}
+{% block extra_script %}
 <script>
   const params = new URLSearchParams(location.search)
   const filterVerify = document.getElementById('filterVerify')

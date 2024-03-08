@@ -1,4 +1,12 @@
-<form action="{% url 'signout' %}" method="post">
-  {% csrf_token %}
-  <button class="btn btn-sm btn-primary" type="submit">Sign out</button>
-</form>
+<a class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  {{request.user.username}}
+</a>
+<ul class="dropdown-menu dropdown-menu-light shadow-sm" aria-labelledby="profileDropdown">
+  <li><a class="dropdown-item" href="{% url 'belanja:wallet.index' %}">Cek Saldo</a></li>
+  <li>
+    <form action="{% url 'signout' %}" method="post">
+      {% csrf_token %}
+      <button class="dropdown-item btn btn-sm btn-danger w-100 text-danger" type="submit">Sign out</button>
+    </form>
+  </li>
+</ul>

@@ -1,3 +1,26 @@
-a {
-    font-size: 14px;
-}
+
+    body {
+      padding: 0;
+      margin: 0;
+      font-family: 'Roboto';
+    }
+
+    .error {
+      background-color: rgb(245, 119, 119, 0.6);
+      color: rgb(173, 9, 9);
+    }
+
+    .warning {
+      background-color: rgba(247, 199, 126, 0.6);
+      color: rgb(192, 134, 8);
+    }
+
+    .success {
+      background-color: rgba(100, 245, 100, 0.671);
+      color: rgb(6, 156, 6);
+    }
+
+    .info {
+      background-color: rgba(22, 124, 241, 0.637);
+      color: rgba(3, 3, 156, 0.637);
+    }

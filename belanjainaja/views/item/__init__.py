@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from ...models import Item
 
@@ -25,6 +26,7 @@ def create(request):
             new_item.name = request.POST['name']
             new_item.price = request.POST['price']
             new_item.save()
+            messages.add_message(request, messages.SUCCESS, "Data berhasil ditambah.")
         except IntegrityError:
             return render(request, "belanjainaja/item/create.html")
         

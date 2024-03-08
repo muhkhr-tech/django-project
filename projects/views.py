@@ -24,6 +24,7 @@ def signin(request):
 
         if user is not None:
             login(request, user)
+            return redirect("belanja:index")
         else:
             messages.add_message(request, messages.ERROR, "Username atau Password salah.")
 
