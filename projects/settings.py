@@ -38,6 +38,11 @@ CORS_ALLOWED_ORIGINS = [
     # Add any other allowed origins as needed
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://django-project-production-1fd5.up.railway.app",
+    # Add any other allowed origins as needed
+]
+
 # Application definition
 
 INSTALLED_APPS = [
