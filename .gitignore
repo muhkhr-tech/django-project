@@ -1,1 +1,12 @@
 venv
+belanjainaja/__pycache__/*
+belanjainaja/views/__pycache__/*
+belanjainaja/views/deposit/__pycache__/*
+belanjainaja/views/item/__pycache__/*
+belanjainaja/views/shop/__pycache__/*
+belanjainaja/views/wallet/__pycache__/*
+belanjainaja/views/withdraw/__pycache__/*
+belanjainaja/migrations/__pycache__/*
+projects/__pycache__/*
+todolist/__pycache__/*
+todolist/migrations/__pycache__/*
