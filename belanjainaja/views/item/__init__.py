@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
 
-from ...models import Item, Deposit, Withdraw, Wallet, Shopping, ShoppingItem
+from ...models import Item
 
 def index(request):
     latest_item_list = Item.objects.all()
